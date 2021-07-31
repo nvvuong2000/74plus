@@ -1,26 +1,25 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RookieOnlineAssetManagement.Data;
 using RookieOnlineAssetManagement.Models;
-using RookieOnlineAssetManagement.Services.Interface;
+using RookieOnlineAssetManagement.Interfaces;
 using RookieOnlineAssetManagement.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RookieOnlineAssetManagement.Services.Implement
+namespace RookieOnlineAssetManagement.Services
 {
-    public class CartRepo : ICart
+    public class CartServices : ICartServices
     {
         private readonly ApplicationDbContext _context;
 
         private readonly IConfiguration _config;
 
-        private readonly IUserDF _repoUser;
+        private readonly IUserServices _repoUser;
 
-        public CartRepo(ApplicationDbContext context, IUserDF repoUser, IConfiguration config )
+        public CartServices(ApplicationDbContext context, IUserServices repoUser, IConfiguration config )
         {
             _context = context;
 

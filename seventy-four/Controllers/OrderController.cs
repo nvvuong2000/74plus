@@ -1,15 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RookieOnlineAssetManagement.Services.Interface;
+using RookieOnlineAssetManagement.Interfaces;
 using RookieOnlineAssetManagement.Share.Repo;
 using RookieOnlineAssetManagement.Shared.ViewModel;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RookieShop.Backend.Controllers
@@ -20,9 +14,9 @@ namespace RookieShop.Backend.Controllers
     public class OrderController : ControllerBase
     {
 
-        private readonly IOrder _repo;
+        private readonly IOrderServices _repo;
 
-        public OrderController(IOrder repo)
+        public OrderController(IOrderServices repo)
         {
 
             _repo = repo;

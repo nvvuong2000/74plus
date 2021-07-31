@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RookieOnlineAssetManagement.Models;
-using RookieOnlineAssetManagement.Services.Interface;
+using RookieOnlineAssetManagement.Interfaces;
 using RookieOnlineAssetManagement.Share.Repo;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,8 +16,8 @@ namespace RookieOnlineAssetManagement.Controllers
     [Microsoft.AspNetCore.Authorization.Authorize]
     public class CategoryController : Controller
     {
-        private readonly ICategory _repo;
-        public CategoryController(ICategory repo)
+        private readonly ICategoryServices _repo;
+        public CategoryController(ICategoryServices repo)
         {
             _repo = repo;
         }

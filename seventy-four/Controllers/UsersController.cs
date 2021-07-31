@@ -1,17 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using RookieOnlineAssetManagement.Data;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using RookieOnlineAssetManagement.Services.Interface;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
-using RookieOnlineAssetManagement.Models;
-using System;
-using EnumsNET;
+using RookieOnlineAssetManagement.Interfaces;
 using RookieOnlineAssetManagement.Shared.ViewModel;
 
 namespace RookieOnlineAssetManagement.Controllers
@@ -22,8 +13,8 @@ namespace RookieOnlineAssetManagement.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserDF _repo;
-        public UsersController(IUserDF repo)
+        private readonly IUserServices _repo;
+        public UsersController(IUserServices repo)
         {
             _repo = repo;
 

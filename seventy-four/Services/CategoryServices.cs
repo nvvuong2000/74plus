@@ -1,21 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RookieOnlineAssetManagement.Data;
 using RookieOnlineAssetManagement.Models;
-using RookieOnlineAssetManagement.Services.Interface;
-using System;
+using RookieOnlineAssetManagement.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace RookieOnlineAssetManagement.Services.Implement
+namespace RookieOnlineAssetManagement.Services
 {
 
-    public class CategoryRepo : ICategory
+    public class CategoryServices : ICategoryServices
     {
         private readonly ApplicationDbContext _context;
 
-        public CategoryRepo(ApplicationDbContext context)
+        public CategoryServices(ApplicationDbContext context)
         {
             _context = context;
         }

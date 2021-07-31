@@ -1,15 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using System.Net.Http;
-using RookieOnlineAssetManagement.Services.Interface;
+using RookieOnlineAssetManagement.Interfaces;
 using RookieOnlineAssetManagement.Shared.ViewModel;
 using RookieOnlineAssetManagement.Share.Repo;
 using RookieOnlineAssetManagement.Models;
@@ -26,9 +19,9 @@ namespace RookieShop.Backend.Controllers
 
     public class ProductController : ControllerBase
     {
-        private readonly IProduct _repo;
+        private readonly IProductServices _repo;
 
-        public ProductController(IProduct repo)
+        public ProductController(IProductServices repo)
         {
 
             _repo = repo;

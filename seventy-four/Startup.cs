@@ -13,12 +13,11 @@ using Microsoft.OpenApi.Models;
 using RookieOnlineAssetManagement.Data;
 using RookieOnlineAssetManagement.IdentityServer;
 using RookieOnlineAssetManagement.Models;
-using RookieOnlineAssetManagement.Services.Implement;
-using RookieOnlineAssetManagement.Services.Interface;
+using RookieOnlineAssetManagement.Services;
+using RookieOnlineAssetManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace RookieOnlineAssetManagement
 {
@@ -40,11 +39,11 @@ namespace RookieOnlineAssetManagement
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddTransient<ICategory, CategoryRepo>();
-            services.AddTransient<IProduct, ProductRepo>();
-            services.AddTransient<IUserDF, UserRepo>();
-            services.AddTransient<ICart, CartRepo>();
-            services.AddTransient<IOrder, OrderRepo>();
+            services.AddTransient<ICategoryServices, CategoryServices>();
+            services.AddTransient<IProductServices, ProductServices>();
+            services.AddTransient<IUserServices, UserServices>();
+            services.AddTransient<ICartServices, CartServices>();
+            services.AddTransient<IOrderServices, OrderServices>();
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -80,6 +79,7 @@ namespace RookieOnlineAssetManagement
             });
 
             services.AddDistributedMemoryCache();
+
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // Or you can also register as follows

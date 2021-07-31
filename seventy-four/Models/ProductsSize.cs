@@ -13,6 +13,7 @@ namespace RookieOnlineAssetManagement.Models
         public int ProductID { get; set; }
 
         public string SizeName { get; set; }
+
         public string Quantity { get; set; }
 
         public Product Product { get; set; }

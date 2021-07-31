@@ -1,26 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RookieOnlineAssetManagement.Data;
-using RookieOnlineAssetManagement.Services.Interface;
+using RookieOnlineAssetManagement.Interfaces;
 using RookieOnlineAssetManagement.Share.Repo;
 using RookieOnlineAssetManagement.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RookieOnlineAssetManagement.Services.Implement
+namespace RookieOnlineAssetManagement.Services
 {
-    public class OrderRepo : IOrder
+    public class OrderServices : IOrderServices
     {
         private readonly ApplicationDbContext _context;
        
-        private readonly IUserDF _repoUser;
+        private readonly IUserServices _repoUser;
         
         private readonly IConfiguration _config;
 
-        public OrderRepo(ApplicationDbContext context, IUserDF repoUser, IConfiguration config)
+        public OrderServices(ApplicationDbContext context, IUserServices repoUser, IConfiguration config)
         {
             _context = context;
            
@@ -183,22 +182,22 @@ namespace RookieOnlineAssetManagement.Services.Implement
             return listOrder;
         }
 
-        Task<List<OrderVm>> IOrder.myOrderList()
+        Task<List<OrderVm>> IOrderServices.myOrderList()
         {
             throw new NotImplementedException();
         }
 
-        Task<List<OrderVm>> IOrder.getAllOrder()
+        Task<List<OrderVm>> IOrderServices.getAllOrder()
         {
             throw new NotImplementedException();
         }
 
-        Task<OrderVm> IOrder.getorDetailsbyOrderId(int id)
+        Task<OrderVm> IOrderServices.getorDetailsbyOrderId(int id)
         {
             throw new NotImplementedException();
         }
 
-        Task<List<OrderVm>> IOrder.getOrderListofCus(string id)
+        Task<List<OrderVm>> IOrderServices.getOrderListofCus(string id)
         {
             throw new NotImplementedException();
         }

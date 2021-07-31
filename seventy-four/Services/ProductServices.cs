@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RookieOnlineAssetManagement.Data;
 using RookieOnlineAssetManagement.Models;
-using RookieOnlineAssetManagement.Services.Interface;
+using RookieOnlineAssetManagement.Interfaces;
 using RookieOnlineAssetManagement.Share.Repo;
 using RookieOnlineAssetManagement.Shared.ViewModel;
 using System;
@@ -15,21 +14,21 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RookieOnlineAssetManagement.Services.Implement
+namespace RookieOnlineAssetManagement.Services
 {
-    public class ProductRepo : IProduct
+    public class ProductServices : IProductServices
     {
         private readonly ApplicationDbContext _context;
 
         private readonly IConfiguration _config;
 
-        private readonly IUserDF _repoUser;
+        private readonly IUserServices _repoUser;
         private readonly IMapper _mapper;
 
 
         private IHostingEnvironment _hostingEnv;
 
-        public ProductRepo(ApplicationDbContext context, IUserDF repoUser, IHostingEnvironment hostingEnv, IConfiguration config, IMapper mapper)
+        public ProductServices(ApplicationDbContext context, IUserServices repoUser, IHostingEnvironment hostingEnv, IConfiguration config, IMapper mapper)
         {
             _context = context;
 

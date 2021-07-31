@@ -1,10 +1,8 @@
-﻿
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace RookieOnlineAssetManagement.Services.Interface
+namespace RookieOnlineAssetManagement.Interfaces
 {
-    public interface ICart
+    public interface ICartServices
     {
         //public Task<List<CartVM>> myCart();
         

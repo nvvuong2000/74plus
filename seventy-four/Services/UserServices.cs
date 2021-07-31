@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using RookieOnlineAssetManagement.Services.Interface;
+using RookieOnlineAssetManagement.Interfaces;
 
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 using RookieOnlineAssetManagement.Data;
 using RookieOnlineAssetManagement.Shared.ViewModel;
 
-namespace RookieOnlineAssetManagement.Services.Implement
+namespace RookieOnlineAssetManagement.Services
 {
-    public class UserRepo : IUserDF
+    public class UserServices : IUserServices
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
       
         private readonly ApplicationDbContext _context;
         
-        public UserRepo(IHttpContextAccessor httpContextAccessor, ApplicationDbContext context)
+        public UserServices(IHttpContextAccessor httpContextAccessor, ApplicationDbContext context)
         {
             _httpContextAccessor = httpContextAccessor;
            

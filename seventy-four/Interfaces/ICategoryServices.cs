@@ -1,11 +1,10 @@
-﻿
-using RookieOnlineAssetManagement.Models;
+﻿using RookieOnlineAssetManagement.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RookieOnlineAssetManagement.Services.Interface
+namespace RookieOnlineAssetManagement.Interfaces
 {
-    public interface ICategory
+    public interface ICategoryServices
     {
         public Task<Category> addCategory(Category category);
        

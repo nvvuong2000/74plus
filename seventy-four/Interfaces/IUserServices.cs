@@ -1,11 +1,10 @@
 ﻿using RookieOnlineAssetManagement.Shared.ViewModel;
-
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RookieOnlineAssetManagement.Services.Interface
+namespace RookieOnlineAssetManagement.Interfaces
 {
-   public interface IUserDF
+   public interface IUserServices
     {
         public string getUserID();
         

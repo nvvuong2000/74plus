@@ -1,14 +1,11 @@
-﻿
-using RookieOnlineAssetManagement.Share.Repo;
+﻿using RookieOnlineAssetManagement.Share.Repo;
 using RookieOnlineAssetManagement.Shared.ViewModel;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace RookieOnlineAssetManagement.Services.Interface
+namespace RookieOnlineAssetManagement.Interfaces
 {
-    public interface IOrder
+    public interface IOrderServices
     {
         public Task<List<OrderVm>> myOrderList();
 

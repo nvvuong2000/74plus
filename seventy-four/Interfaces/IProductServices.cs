@@ -1,16 +1,13 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RookieOnlineAssetManagement.Models;
 using RookieOnlineAssetManagement.Share.Repo;
 using RookieOnlineAssetManagement.Shared.ViewModel;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace RookieOnlineAssetManagement.Services.Interface
+namespace RookieOnlineAssetManagement.Interfaces
 {
-    public interface IProduct
+    public interface IProductServices
     {
         public Task<bool> addProduct([FromForm] ProductRequest product);
 
