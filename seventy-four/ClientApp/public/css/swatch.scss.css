@@ -1,0 +1,135 @@
+/* 
+Swatches Styles
+*/
+.swatch {
+  margin: 0.5em 0; }
+
+/* Label */
+.swatch .header-s {
+  margin: 0;
+  font-weight: bold;
+  margin: 10px 0;
+  display: inline-block;
+  min-width: 200px;
+  position: relative; }
+
+.swatch .header-s:before {
+  content: ''; }
+
+/* Hide radio buttons.*/
+.swatch input {
+  display: none; }
+
+.swatch label {
+  float: left;
+  min-width: 35px !important;
+  height: 35px !important;
+  margin: 0;
+  text-align: center;
+  line-height: 35px;
+  white-space: nowrap;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  position: relative; }
+
+.swatch-element label {
+  padding: 0 10px; }
+
+.color.swatch-element label {
+  background-size: contain !important;
+  padding: 0px 10px 0px 25px; }
+
+.swatch .swatch-element {
+  -webkit-transform: translateZ(0);
+  /* webkit flicker fix */
+  -webkit-font-smoothing: antialiased;
+  /* webkit text rendering fix */
+  margin: 0px;
+  display: inline-block;
+  position: relative; }
+
+/* Image with the cross in it */
+.crossed-out {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0; }
+
+.swatch .swatch-element .crossed-out {
+  display: none; }
+
+.swatch .swatch-element.soldout .crossed-out {
+  display: block; }
+
+.swatch .swatch-element.soldout label {
+  filter: alpha(opacity=60);
+  /* internet explorer */
+  -khtml-opacity: 0.6;
+  /* khtml, old safari */
+  -moz-opacity: 0.6;
+  /* mozilla, netscape */
+  opacity: 0.6;
+  /* fx, safari, opera */ }
+
+.swatch .img-check {
+  display: none;
+  position: absolute;
+  right: 0;
+  bottom: 0; }
+
+.swatch-element label.sd {
+  border: 1px solid #e4393c; }
+
+.swatch-element label.sd img.img-check {
+  display: block; }
+
+.swatch-element label span {
+  color: #000;
+  font-size: 13px;
+  line-height: normal;
+  vertical-align: middle; }
+
+/*
+label.sd{
+border: 1px solid #F00;
+background: url(//theme.hstatic.net/1000344185/1000478812/14/select-pro.png?v=393) right bottom no-repeat;
+}
+
+.n-sd:nth-child(1) label {
+border: 1px solid #F00;
+background: url(//theme.hstatic.net/1000344185/1000478812/14/select-pro.png?v=393) right bottom no-repeat;
+}
+*/
+label[for="product-select-option-0"] {
+  display: none; }
+
+label[for="product-select-option-1"] {
+  display: none; }
+
+label[for="product-select-option-2"] {
+  display: none; }
+
+#product-select-option-0 {
+  display: none; }
+
+#product-select-option-1 {
+  display: none; }
+
+#product-select-option-2 {
+  display: none; }
+
+#product-select-option-0 + .custom-style-select-box {
+  display: none !important; }
+
+#product-select-option-1 + .custom-style-select-box {
+  display: none !important; }
+
+#product-select-option-2 + .custom-style-select-box {
+  display: none !important; }
+
+.color.swatch-element label.no-thumb {
+  padding-left: 10px; }
+
+/*end swatch*/

@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="./checkout.css">
+
+    <title>Hello, world!</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <link rel="canonical" href="/cart/checkout">
+        <div class="content">
+            <div class="wrap">
+                <form action="" method="post" id="formCheckOut" class="clearfix">
+                    <div class="main">
+                        <div class="main-header">
+                            <a href="/" class="logo">
+                                <img src="https://storage.googleapis.com/cdn.nhanh.vn/store2/83461/store_1599900515_46.jpg"
+                                    alt="Home">
+                            </a>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="/cart">Giỏ hàng</a>
+                                </li>
+                                <li class="breadcrumb-item breadcrumb-item-current">Thanh toán</li>
+                            </ul>
+                        </div>
+                        <div class="product-mb">
+                            <table class="product-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"><span class="visually-hidden">Hình ảnh</span></th>
+                                        <th scope="col"><span class="visually-hidden">Mô tả</span></th>
+                                        <th scope="col"><span class="visually-hidden">Số lượng</span></th>
+                                        <th scope="col"><span class="visually-hidden">Giá</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="product">
+                                        <td class="product-image">
+                                            <div class="product-thumbnail">
+                                                <div class="product-thumbnail-wrapper">
+                                                    <img class="product-thumbnail-image"
+                                                        alt="Áo Falling Angel - L - Tím Taro"
+                                                        src="https://storage.googleapis.com/cdn.nhanh.vn/store2/83461/ps/20210606/Tim_taro__17___Custom__thumb.jpg">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="product-description">
+                                            <span class="product-description-name order-summary-emphasis">Áo Falling
+                                                Angel - L - Tím Taro</span>
+                                            <a data-id="32411792" class="deleteItem cart_remove">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </a>
+                                            <div class="qtt_checkout qty quantity-partent qty-click clearfix">
+                                                <span class="add-down add-action">-</span>
+                                                <input type="text" size="4" min="1" max="5000" data-id="32411792"
+                                                    value="2" class="tc line-item-qty item-quantity" readonly="">
+                                                <span class="add-up add-action">+</span>
+                                            </div>
+                                        </td>
+                                        <td class="product-price">
+                                            <span class="order-summary-emphasis">
+                                                398,000 ₫</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="product">
+                                        <td class="product-image">
+                                            <div class="product-thumbnail">
+                                                <div class="product-thumbnail-wrapper">
+                                                    <img class="product-thumbnail-image"
+                                                        alt="Áo Tiểu Hành Tinh Sao Hỏa - L - Hồng Orchid"
+                                                        src="https://storage.googleapis.com/cdn.nhanh.vn/store2/83461/ps/20210513/5__Custom__thumb.jpg">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="product-description">
+                                            <span class="product-description-name order-summary-emphasis">Áo Tiểu Hành
+                                                Tinh Sao Hỏa - L - Hồng Orchid</span>
+                                            <a data-id="31727067" class="deleteItem cart_remove">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </a>
+                                            <div class="qtt_checkout qty quantity-partent qty-click clearfix">
+                                                <span class="add-down add-action">-</span>
+                                                <input type="text" size="4" min="1" max="5000" data-id="31727067"
+                                                    value="1" class="tc line-item-qty item-quantity" readonly="">
+                                                <span class="add-up add-action">+</span>
+                                            </div>
+                                        </td>
+                                        <td class="product-price">
+                                            <span class="order-summary-emphasis">
+                                                199,000 ₫</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="main-content">
+                            <div class="step">
+                                <div class="step-sections steps-onepage" step="1">
+                                    <div class="section">
+                                        <div class="section-header">
+                                            <h2 class="section-title">Thông tin giao hàng</h2>
+                                        </div>
+                                        <div class="section-content section-customer-information no-mb">
+                                            <div class="fieldset">
+                                                <div class="field field-required  ">
+                                                    <div class="field-input-wrapper">
+                                                        <label class="field-label" for="billing_address_full_name">Họ và
+                                                            tên </label>
+                                                        <input placeholder="Họ và tên"
+                                                            class="field-input validate[required]" size="30" type="text"
+                                                            id="billing_address_full_name" name="customerName" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="field  field-two-thirds  ">
+                                                    <div class="field-input-wrapper">
+                                                        <label class="field-label"
+                                                            for="checkout_user_email">Email</label>
+                                                        <input placeholder="Email" class="field-input " size="30"
+                                                            type="email" id="checkout_user_email" name="customerEmail"
+                                                            value="">
+                                                    </div>
+                                                </div>
+                                                <div class="field field-required field-third ">
+                                                    <div class="field-input-wrapper">
+                                                        <label class="field-label" for="billing_address_phone">Số điện
+                                                            thoại </label>
+                                                        <input placeholder="Số điện thoại"
+                                                            class="field-input validate[required, custom[phone]]"
+                                                            size="30" maxlength="10" type="tel"
+                                                            id="billing_address_phone" name="customerMobile" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="field field-required  ">
+                                                    <div class="field-input-wrapper">
+                                                        <label class="field-label" for="billing_address_address1">Địa
+                                                            chỉ </label>
+                                                        <input placeholder="Địa chỉ"
+                                                            class="field-input validate[required]" size="30" type="text"
+                                                            id="billing_address_address1" name="customerAddress"
+                                                            value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="section-content">
+                                            <div class="fieldset">
+                                                <div class="field field-show-floating-label field-required field-half ">
+                                                    <div class="field-input-wrapper field-input-wrapper-select">
+                                                        <label class="field-label" for="cityId">Tỉnh/ Thành phố </label>
+                                                        <select class="field-input validate[required]" id="cityId"
+                                                            name="customerCityId">
+                                                            <option value="">Chọn Tỉnh/ thành phố</option>
+                                                            <option value="254">Hà Nội</option>
+                                                            <option value="255">Hồ Chí Minh</option>
+                                                            <option value="256">An Giang</option>
+                                                            <option value="257">Bà Rịa - Vũng Tàu</option>
+                                                            <option value="258">Bắc Ninh</option>
+                                                            <option value="259">Bắc Giang</option>
+                                                            <option value="260">Bình Dương</option>
+                                                            <option value="261">Bình Định</option>
+                                                            <option value="262">Bình Phước</option>
+                                                            <option value="263">Bình Thuận</option>
+                                                            <option value="264">Bến Tre</option>
+                                                            <option value="265">Bắc Cạn</option>
+                                                            <option value="266">Cần Thơ</option>
+                                                            <option value="267">Khánh Hòa</option>
+                                                            <option value="268">Thừa Thiên Huế</option>
+                                                            <option value="269">Lào Cai</option>
+                                                            <option value="270">Quảng Ninh</option>
+                                                            <option value="271">Đồng Nai</option>
+                                                            <option value="272">Nam Định</option>
+                                                            <option value="273">Cà Mau</option>
+                                                            <option value="274">Cao Bằng</option>
+                                                            <option value="275">Gia Lai</option>
+                                                            <option value="276">Hà Giang</option>
+                                                            <option value="277">Hà Nam</option>
+                                                            <option value="278">Hà Tĩnh</option>
+                                                            <option value="279">Hải Dương</option>
+                                                            <option value="280">Hải Phòng</option>
+                                                            <option value="281">Hòa Bình</option>
+                                                            <option value="282">Hưng Yên</option>
+                                                            <option value="283">Kiên Giang</option>
+                                                            <option value="284">Kon Tum</option>
+                                                            <option value="285">Lai Châu</option>
+                                                            <option value="286">Lâm Đồng</option>
+                                                            <option value="287">Lạng Sơn</option>
+                                                            <option value="288">Long An</option>
+                                                            <option value="289">Nghệ An</option>
+                                                            <option value="290">Ninh Bình</option>
+                                                            <option value="291">Ninh Thuận</option>
+                                                            <option value="292">Phú Thọ</option>
+                                                            <option value="293">Phú Yên</option>
+                                                            <option value="294">Quảng Bình</option>
+                                                            <option value="295">Quảng Nam</option>
+                                                            <option value="296">Quảng Ngãi</option>
+                                                            <option value="297">Quảng Trị</option>
+                                                            <option value="298">Sóc Trăng</option>
+                                                            <option value="299">Sơn La</option>
+                                                            <option value="300">Tây Ninh</option>
+                                                            <option value="301">Thái Bình</option>
+                                                            <option value="302">Thái Nguyên</option>
+                                                            <option value="303">Thanh Hóa</option>
+                                                            <option value="304">Tiền Giang</option>
+                                                            <option value="305">Trà Vinh</option>
+                                                            <option value="306">Tuyên Quang</option>
+                                                            <option value="307">Vĩnh Long</option>
+                                                            <option value="308">Vĩnh Phúc</option>
+                                                            <option value="309">Yên Bái</option>
+                                                            <option value="310">Đắk Lắk</option>
+                                                            <option value="311">Đồng Tháp</option>
+                                                            <option value="312">Đà Nẵng</option>
+                                                            <option value="313">Đắc Nông</option>
+                                                            <option value="314">Hậu Giang</option>
+                                                            <option value="315">Bạc Liêu</option>
+                                                            <option value="316">Điện Biên</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="field field-show-floating-label field-required field-half ">
+                                                    <div class="field-input-wrapper field-input-wrapper-select">
+                                                        <label class="field-label" for="districtId">Quận/ Huyện </label>
+                                                        <select class="field-input validate[required]" id="districtId"
+                                                            name="customerDistrictId">
+                                                            <option value="">Chọn Quận/ Huyện</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="field field-show-floating-label field-required field-half ">
+                                                    <div class="field-input-wrapper field-input-wrapper-select">
+                                                        <label class="field-label" for="wardId">Phường/ xã </label>
+                                                        <select class="field-input validate[required]" id="wardId"
+                                                            name="customerWardId">
+                                                            <option value="">Phường xã</option>
+                                                        </select>
+                                                        <input type="hidden" name="selectIdWard">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="section-content section-customer-information fieldset"
+                                                id="div_country_not_vietnam" style="display: none;">
+                                                <div class="field field-two-thirds">
+                                                    <div class="field-input-wrapper">
+                                                        <label class="field-label" for="billing_address_city">Thành
+                                                            phố</label>
+                                                        <input placeholder="Thành phố" class="field-input" size="30"
+                                                            type="text" id="billing_address_city"
+                                                            name="billing_address[city]" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="field field-third">
+                                                    <div class="field-input-wrapper">
+                                                        <label class="field-label" for="billing_address_zip">Mã bưu
+                                                            chính</label>
+                                                        <input placeholder="Mã bưu chính" class="field-input" size="30"
+                                                            type="text" id="billing_address_zip"
+                                                            name="billing_address[zip]" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="field-input-wrapper">
+                                                <div class="descriptionCustomer"><textarea name="description"
+                                                        class="input validate[required]" placeholder="Ghi chú sản phẩm tặng (chương trình 1 tặng 1). 
+Ví dụ: áo thun KOR_màu đen_ size M" rows="5" style="width: 100%;padding: 5px;box-shadow: 0 0 0 1px #d9d9d9;border-radius: 4px;transition: all .2s ease-out;"></textarea>
+                                                    <p style="margin: 10px 0;color: #338dbc">Bạn hãy điền tên - size -
+                                                        màu sắc sản phẩm tặng. Bạn có thể tự chọn sản phẩm tặng bất kì,
+                                                        sản phẩm tặng có giá bằng hoặc không cao hơn sản phẩm
+                                                        chính.&nbsp;Không giới hạn sản phẩm tặng trong đơn hàng (mua 1
+                                                        tặng 1, mua 2 tặng 2,...).&nbsp;Với sweater, sản phẩm tặng không
+                                                        phải là sweater và phải có giá thấp hơn sản phẩm chính.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="change_pick_location_or_shipping">
+                                            <div id="section-payment-method" class="section">
+                                                <div class="section-header">
+                                                    <h2 class="section-title">Phương thức thanh toán</h2>
+                                                </div>
+                                                <div class="section-content">
+                                                    <div class="content-box">
+                                                        <div class="radio-wrapper content-box-row hiddenCod">
+                                                            <label class="radio-label">
+                                                                <div class="radio-input">
+                                                                    <input class="input-radio validate[required] cod"
+                                                                        checked="" name="paymentMethod" type="radio"
+                                                                        value="1">
+                                                                </div>
+                                                                <span class="radio-label-primary">Thanh toán khi nhận
+                                                                    hàng (COD)</span>
+                                                            </label>
+                                                            <div class="text-center cod_description">
+                                                                <p>Thanhn toán khi nhận hàng</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><input type="hidden" id="baokimPmMethodId" name="baokimBankPaymentMethodId"
+                                    value="Baokim">
+                                <div class="step-footer hidden-xs">
+                                    <a class="step-footer-previous-link" href="/cart">
+                                        <svg class="previous-link-icon icon-chevron icon"
+                                            xmlns="http://www.w3.org/2000/svg" width="6.7" height="11.3"
+                                            viewBox="0 0 6.7 11.3">
+                                            <path d="M6.7 1.1l-1-1.1-4.6 4.6-1.1 1.1 1.1 1 4.6 4.6 1-1-4.6-4.6z"></path>
+                                        </svg>
+                                        Giỏ hàng
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar">
+                        <div class="sidebar-content">
+                            <div class="order-summary">
+                                <h2 class="visually-hidden">Thông tin đơn hàng</h2>
+                                <div class="order-summary-sections">
+                                    <div class="order-summary-section order-summary-section-product-list product-pc">
+                                        <table class="product-table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col"><span class="visually-hidden">Hình ảnh</span></th>
+                                                    <th scope="col"><span class="visually-hidden">Mô tả</span></th>
+                                                    <th scope="col"><span class="visually-hidden">Số lượng</span></th>
+                                                    <th scope="col"><span class="visually-hidden">Giá</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="product">
+                                                    <td class="product-image">
+                                                        <div class="product-thumbnail">
+                                                            <div class="product-thumbnail-wrapper">
+                                                                <img class="product-thumbnail-image"
+                                                                    alt="Áo Falling Angel - L - Tím Taro"
+                                                                    src="https://storage.googleapis.com/cdn.nhanh.vn/store2/83461/ps/20210606/Tim_taro__17___Custom__thumb.jpg">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="product-description">
+                                                        <span class="product-description-name order-summary-emphasis">Áo
+                                                            Falling Angel - L - Tím Taro</span>
+                                                        <a data-id="32411792" class="deleteItem cart_remove">
+                                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                                        </a>
+                                                        <div
+                                                            class="qtt_checkout qty quantity-partent qty-click clearfix">
+                                                            <span class="add-down add-action">-</span>
+                                                            <input type="text" size="4" min="1" max="5000"
+                                                                data-id="32411792" value="2"
+                                                                class="tc line-item-qty item-quantity" readonly="">
+                                                            <span class="add-up add-action">+</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="product-price">
+                                                        <span class="order-summary-emphasis">
+                                                            398,000 ₫</span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="product">
+                                                    <td class="product-image">
+                                                        <div class="product-thumbnail">
+                                                            <div class="product-thumbnail-wrapper">
+                                                                <img class="product-thumbnail-image"
+                                                                    alt="Áo Tiểu Hành Tinh Sao Hỏa - L - Hồng Orchid"
+                                                                    src="https://storage.googleapis.com/cdn.nhanh.vn/store2/83461/ps/20210513/5__Custom__thumb.jpg">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="product-description">
+                                                        <span class="product-description-name order-summary-emphasis">Áo
+                                                            Tiểu Hành Tinh Sao Hỏa - L - Hồng Orchid</span>
+                                                        <a data-id="31727067" class="deleteItem cart_remove">
+                                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                                        </a>
+                                                        <div
+                                                            class="qtt_checkout qty quantity-partent qty-click clearfix">
+                                                            <span class="add-down add-action">-</span>
+                                                            <input type="text" size="4" min="1" max="5000"
+                                                                data-id="31727067" value="1"
+                                                                class="tc line-item-qty item-quantity" readonly="">
+                                                            <span class="add-up add-action">+</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="product-price">
+                                                        <span class="order-summary-emphasis">
+                                                            199,000 ₫</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="order-summary-section order-summary-section-discount"
+                                        data-order-summary-section="discount">
+                                        <div class="fieldset">
+                                            <div style="color:#f77705;margin-left:9px;font-weight:bold;display:none;">
+                                                Nhập mã giảm giá tại đây (nếu có)</div>
+                                            <div class="field">
+                                                <div class="field-input-btn-wrapper">
+                                                    <div class="field-input-wrapper">
+                                                        <label class="field-label" for="discount.code">Mã giảm
+                                                            giá</label>
+                                                        <input placeholder="Mã giảm giá" class="field-input" size="30"
+                                                            type="text" id="coupon" name="couponCode" value="">
+                                                    </div>
+                                                    <button type="button" class="field-input-btn btn btn-default"
+                                                        id="getCoupon">
+                                                        <span class="btn-content">Sử dụng</span>
+                                                        <i class="btn-spinner icon icon-button-spinner"></i>
+                                                    </button>
+                                                </div>
+                                                <div id="txtCode"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="order-summary-section order-summary-section-total-lines">
+                                        <table class="total-line-table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col"><span class="visually-hidden">Mô tả</span></th>
+                                                    <th scope="col"><span class="visually-hidden">Giá</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="total-line total-line-shipping shipFeeCheckHost">
+                                                    <td class="total-line-name">Phí vận chuyển</td>
+                                                    <td class="total-line-price">
+                                                        <span class="order-summary-emphasis" value="0" id="shipFee">
+                                                            —
+                                                        </span>
+                                                        <span id="showCarrier"></span>
+                                                        <style>
+                                                            #showCarrier {
+                                                                display: block;
+                                                                text-align: right;
+                                                                width: 100%;
+                                                                font-size: 11px;
+                                                            }
+
+                                                            .changeOrtherShipFee:hover {
+                                                                color: darkred;
+                                                                text-decoration: underline;
+                                                            }
+                                                        </style>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot class="total-line-table-footer">
+                                                <tr class="total-line">
+                                                    <td class="total-line-name payment-due-label">
+                                                        <span class="payment-due-label-total">Tổng cộng</span>
+                                                    </td>
+                                                    <td class="total-line-name payment-due">
+                                                        <span class="payment-due-currency">VND</span>
+                                                        <span class="payment-due-price" id="showTotalMoney"
+                                                            value="597000">
+                                                            597,000₫
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                <h3 class="notice-checkout"
+                                    style="font-weight: 400; padding: 10px; border: 1px solid #f77705; line-height: 18px; margin: 0;">
+                                    <p>Scott Platon áp dụng đồng giá phí vận chuyển 20.000 VND cho tp.HCM và 30.000 VND
+                                        cho các tỉnh thành khác. Chúng tôi xác nhận đơn hàng qua Email. Bạn vui lòng
+                                        KIỂM TRA email sau khi đặt hàng thành công và CHỜ NHẬN HÀNG.</p>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="sidebar-footer">
+                            <button type="submit" class="step-footer-continue-btn btn checkout-accept">
+                                <span class="btn-content">Hoàn tất đơn hàng</span>
+                                <i class="btn-spinner icon icon-button-spinner"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="tableShipFee"></div>
+                    <style>
+                        #tableShipFee {
+                            display: none;
+                            clear: both
+                        }
+                    </style>
+                </form>
+            </div>
+        </div>
+        <div style="display: none">
+            <div id="progressbar" style="text-align: center;">
+                <img src="/img/loading.gif">
+                <p style="font-weight:bold;">Đang xử lý...</p>
+            </div>
+        </div>
+        <style>
+            .fb_iframe_widget iframe {
+                z-index: 1 !important;
+            }
+        </style>
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
+    </script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+    -->
+</body>
+
+</html>

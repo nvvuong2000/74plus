@@ -1,0 +1,8 @@
+export const USER_LIST = "USER_LIST";
+export const ADD_USER = "ADD_USER";
+export const USER_SELECTED = "USER_SELECTED";
+export const UPDATE_USER = "UPDATE_USER";
+export const DISABLE_USER = "DISABLE_USER";
+export const GET_USER_LOGIN = "GET_USER_LOGIN";
+export const CHANGE_PASSWORD = "CHANGE_PASSWORD";
+export const UPDATE_STT_CHANGE_PASSWORD = "UPDATE_STT_CHANGE_PASSWORD";
