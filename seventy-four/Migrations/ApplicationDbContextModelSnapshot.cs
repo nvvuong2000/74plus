@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RookieOnlineAssetManagement.Data;
 
-namespace RookieOnlineAssetManagement.Migrations
+namespace seventyfour.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -154,27 +154,6 @@ namespace RookieOnlineAssetManagement.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("RookieOnlineAssetManagement.Models.Cart", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ProductId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Carts");
-                });
-
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -215,9 +194,16 @@ namespace RookieOnlineAssetManagement.Migrations
 
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.Order", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CustomerAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateOrdered")
                         .HasColumnType("datetime2");
@@ -228,30 +214,26 @@ namespace RookieOnlineAssetManagement.Migrations
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
 
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.OrderDetails", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("ProductId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProductName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductSizeId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -263,7 +245,7 @@ namespace RookieOnlineAssetManagement.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId", "ProductSizeId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -271,9 +253,10 @@ namespace RookieOnlineAssetManagement.Migrations
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.Product", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductSizeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("BackImagePath")
                         .HasColumnType("nvarchar(max)");
@@ -305,6 +288,9 @@ namespace RookieOnlineAssetManagement.Migrations
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.Property<int>("StateProduct")
                         .HasColumnType("int");
 
@@ -320,16 +306,18 @@ namespace RookieOnlineAssetManagement.Migrations
                     b.Property<string>("UserIdUpdated")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id", "ProductSizeId");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("ProductSizeId");
 
                     b.ToTable("Products");
                 });
 
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.ProductImages", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -343,37 +331,32 @@ namespace RookieOnlineAssetManagement.Migrations
                     b.Property<string>("PathName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductID")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.Property<int?>("ProductSizeId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("ProductID");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId", "ProductSizeId");
 
                     b.ToTable("ProductImages");
                 });
 
-            modelBuilder.Entity("RookieOnlineAssetManagement.Models.ProductsSize", b =>
+            modelBuilder.Entity("RookieOnlineAssetManagement.Models.ProductSize", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ProductID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Quantity")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SizeName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ProductID");
-
-                    b.ToTable("ProductsSize");
+                    b.ToTable("ProductSizes");
                 });
 
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.User", b =>
@@ -498,37 +481,9 @@ namespace RookieOnlineAssetManagement.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RookieOnlineAssetManagement.Models.Cart", b =>
-                {
-                    b.HasOne("RookieOnlineAssetManagement.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RookieOnlineAssetManagement.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("RookieOnlineAssetManagement.Models.Order", b =>
-                {
-                    b.HasOne("RookieOnlineAssetManagement.Models.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.OrderDetails", b =>
                 {
-                    b.HasOne("RookieOnlineAssetManagement.Models.Order", "Order")
+                    b.HasOne("RookieOnlineAssetManagement.Models.Order", null)
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -536,11 +491,7 @@ namespace RookieOnlineAssetManagement.Migrations
 
                     b.HasOne("RookieOnlineAssetManagement.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
+                        .HasForeignKey("ProductId", "ProductSizeId");
 
                     b.Navigation("Product");
                 });
@@ -553,29 +504,22 @@ namespace RookieOnlineAssetManagement.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RookieOnlineAssetManagement.Models.ProductSize", "ProductSize")
+                        .WithMany()
+                        .HasForeignKey("ProductSizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("ProductSize");
                 });
 
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.ProductImages", b =>
                 {
-                    b.HasOne("RookieOnlineAssetManagement.Models.Product", "Product")
+                    b.HasOne("RookieOnlineAssetManagement.Models.Product", null)
                         .WithMany("ProductImages")
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("RookieOnlineAssetManagement.Models.ProductsSize", b =>
-                {
-                    b.HasOne("RookieOnlineAssetManagement.Models.Product", "Product")
-                        .WithMany("ProductSize")
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
+                        .HasForeignKey("ProductId", "ProductSizeId");
                 });
 
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.Category", b =>
@@ -591,13 +535,6 @@ namespace RookieOnlineAssetManagement.Migrations
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.Product", b =>
                 {
                     b.Navigation("ProductImages");
-
-                    b.Navigation("ProductSize");
-                });
-
-            modelBuilder.Entity("RookieOnlineAssetManagement.Models.User", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace RookieOnlineAssetManagement.Models
+namespace RookieOnlineAssetManagement.Common.Enums
 {
     public enum StateOrderEnum
     {

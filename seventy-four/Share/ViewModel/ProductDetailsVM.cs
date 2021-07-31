@@ -24,7 +24,7 @@ namespace RookieOnlineAssetManagement.Shared.ViewModel
         public bool Status { get; set; }
         public List<string> Alt { get; set; }
         public List<string> PathName { get; set; }
-        public List<ProductsSize> ProductsSize { get; set; }
+        public List<ProductSize> ProductsSize { get; set; }
 
     }
 }

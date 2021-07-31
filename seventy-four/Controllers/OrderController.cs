@@ -27,9 +27,11 @@ namespace RookieShop.Backend.Controllers
         public async Task<ActionResult<IEnumerable<OrderVm>>> GetMyListOrder()
         {
 
-            var list = await _repo.myOrderList();
+            //var list = await _repo.myOrderList();
 
-            return list;
+            //return list;
+
+            return null;
 
         }
         

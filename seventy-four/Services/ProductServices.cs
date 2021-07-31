@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using RookieOnlineAssetManagement.Common.Enums;
 
 namespace RookieOnlineAssetManagement.Services
 {
@@ -103,7 +104,7 @@ namespace RookieOnlineAssetManagement.Services
                     // create new image product
                     var ProductImage = new ProductImages
                     {
-                        ProductID = productId,
+                        // ProductID = productId,
 
                         PathName = Path.Combine("/images/" + random.ToString() + formFile.FileName),
 
@@ -420,7 +421,7 @@ namespace RookieOnlineAssetManagement.Services
                             {
                                 if (DeleteFile(productImagesEdit[i].PathName) == true)
                                 {
-                                    var img = await _context.ProductImages.FindAsync(productImagesEdit[i].ID);
+                                    var img = await _context.ProductImages.FindAsync(productImagesEdit[i].Id);
 
                                     if (img == null)
                                     {
@@ -454,7 +455,7 @@ namespace RookieOnlineAssetManagement.Services
                             }
                             var ProductImage = new ProductImages
                             {
-                                ProductID = id,
+                                //ProductId = id,
 
                                 PathName = Path.Combine("/images/" + random.ToString() + formFile.FileName),
 

@@ -67,29 +67,31 @@ namespace RookieOnlineAssetManagement.Services
         // this method get information ab customer 
         public async Task<List<UserListInfo>> getListUser()
         {
-            var Listinfo = await (from u in _context.Users
+            //var Listinfo = await (from u in _context.Users
 
-                                  join od in _context.Order on u.Id equals od.UserId
+            //                      join od in _context.Order on u.Id equals od.UserId
 
-                                  group od by new { od.UserId, u.CustomerName, u.Email, u.PhoneNumber } into users
+            //                      group od by new { od.UserId, u.CustomerName, u.Email, u.PhoneNumber } into users
 
-                                  select new UserListInfo
-                                  {
-                                      UserId = users.Key.UserId,
+            //                      select new UserListInfo
+            //                      {
+            //                          UserId = users.Key.UserId,
 
-                                      FullName = users.Key.CustomerName,
+            //                          FullName = users.Key.CustomerName,
 
-                                      UserEmail = users.Key.Email,
+            //                          UserEmail = users.Key.Email,
 
-                                      UserPhone = users.Key.PhoneNumber,
+            //                          UserPhone = users.Key.PhoneNumber,
 
-                                      CountOrder = users.Count(),
+            //                          CountOrder = users.Count(),
 
-                                      TotalOrder = users.Sum(x => x.Total),
+            //                          TotalOrder = users.Sum(x => x.Total),
 
-                                  }).ToListAsync();
+            //                      }).ToListAsync();
 
-            return Listinfo;
+            //return Listinfo;
+
+            return null;
 
 
         }

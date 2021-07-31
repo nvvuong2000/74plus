@@ -42,7 +42,6 @@ namespace RookieOnlineAssetManagement
             services.AddTransient<ICategoryServices, CategoryServices>();
             services.AddTransient<IProductServices, ProductServices>();
             services.AddTransient<IUserServices, UserServices>();
-            services.AddTransient<ICartServices, CartServices>();
             services.AddTransient<IOrderServices, OrderServices>();
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
