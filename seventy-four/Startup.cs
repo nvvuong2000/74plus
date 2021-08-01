@@ -44,6 +44,7 @@ namespace RookieOnlineAssetManagement
             services.AddTransient<IUserServices, UserServices>();
             services.AddTransient<IOrderServices, OrderServices>();
             services.AddTransient<IFileServices, FileServices>();
+            services.AddTransient<ISizeServices, SizeServices>();
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
