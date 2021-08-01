@@ -2,6 +2,7 @@
 using RookieOnlineAssetManagement.Common.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RookieOnlineAssetManagement.Models
 {
@@ -17,10 +18,11 @@ namespace RookieOnlineAssetManagement.Models
 
         public string BackImagePath { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal UnitPrice { get; set; }
         
         public string Description { get; set; }
-        
+
         public DateTime DateCreated { get; set; }
         
         public DateTime DateUpated { get; set; }
@@ -36,8 +38,6 @@ namespace RookieOnlineAssetManagement.Models
         public int PercentSale { get; set; }
 
         public bool Status { get; set; }
-
-        public int Quantity { get; set; }
 
         public StateProductEnum StateProduct { get; set; }
 

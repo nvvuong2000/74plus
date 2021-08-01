@@ -1,6 +1,7 @@
 ﻿using RookieOnlineAssetManagement.Common.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RookieOnlineAssetManagement.Models
 {
@@ -16,6 +17,7 @@ namespace RookieOnlineAssetManagement.Models
 
         public DateTime DateOrdered { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Total { get; set; }
 
         public ICollection<OrderDetails> OrderDetails { get; set; }

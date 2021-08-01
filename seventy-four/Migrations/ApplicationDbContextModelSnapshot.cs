@@ -284,9 +284,6 @@ namespace seventyfour.Migrations
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
                     b.Property<int>("StateProduct")
                         .HasColumnType("int");
 

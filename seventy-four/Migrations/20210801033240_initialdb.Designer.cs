@@ -10,7 +10,7 @@ using RookieOnlineAssetManagement.Data;
 namespace seventyfour.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210801025228_initialdb")]
+    [Migration("20210801033240_initialdb")]
     partial class initialdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -285,9 +285,6 @@ namespace seventyfour.Migrations
 
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
 
                     b.Property<int>("StateProduct")
                         .HasColumnType("int");

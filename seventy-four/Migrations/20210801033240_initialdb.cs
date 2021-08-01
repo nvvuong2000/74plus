@@ -218,7 +218,6 @@ namespace seventyfour.Migrations
                     IsSale = table.Column<bool>(type: "bit", nullable: false),
                     PercentSale = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
                     StateProduct = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
