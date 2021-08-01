@@ -18,6 +18,6 @@ namespace RookieOnlineAssetManagement.Models
 
         public decimal Total { get; set; }
 
-        public virtual ICollection<OrderDetails> OrderDetails { get; set; }
+        public ICollection<OrderDetails> OrderDetails { get; set; }
     }
 }

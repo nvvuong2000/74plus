@@ -80,16 +80,16 @@ namespace seventyfour.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductSizes",
+                name: "Sizes",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SizeName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductSizes", x => x.ID);
+                    table.PrimaryKey("PK_Sizes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -202,8 +202,8 @@ namespace seventyfour.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    ProductSizeId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FrontImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -223,18 +223,12 @@ namespace seventyfour.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => new { x.Id, x.ProductSizeId });
+                    table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_ProductSizes_ProductSizeId",
-                        column: x => x.ProductSizeId,
-                        principalTable: "ProductSizes",
-                        principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -245,10 +239,9 @@ namespace seventyfour.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: true),
-                    ProductSizeId = table.Column<int>(type: "int", nullable: true)
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -260,11 +253,11 @@ namespace seventyfour.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Products_ProductId_ProductSizeId",
-                        columns: x => new { x.ProductId, x.ProductSizeId },
+                        name: "FK_OrderDetails_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumns: new[] { "Id", "ProductSizeId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -273,37 +266,68 @@ namespace seventyfour.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     PathName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Index = table.Column<int>(type: "int", nullable: false),
-                    CaptionImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProductId = table.Column<int>(type: "int", nullable: true),
-                    ProductSizeId = table.Column<int>(type: "int", nullable: true)
+                    CaptionImage = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductImages_Products_ProductId_ProductSizeId",
-                        columns: x => new { x.ProductId, x.ProductSizeId },
+                        name: "FK_ProductImages_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumns: new[] { "Id", "ProductSizeId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductSizes",
+                columns: table => new
+                {
+                    SizeId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductSizes", x => new { x.ProductId, x.SizeId });
+                    table.ForeignKey(
+                        name: "FK_ProductSizes_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductSizes_Sizes_SizeId",
+                        column: x => x.SizeId,
+                        principalTable: "Sizes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "CategoryDescription", "CategoryName" },
-                values: new object[] { 3, "Foreign language books are original books produced in foreign countries", "Foreign" });
+                values: new object[,]
+                {
+                    { 3, "Foreign language books are original books produced in foreign countries", "Foreign" },
+                    { 4, "a book containing recipes and other information about the preparation and cooking of food.", "Cookbooks" },
+                    { 5, "causing or meant to cause laughter.", "Comics" }
+                });
 
             migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "Id", "CategoryDescription", "CategoryName" },
-                values: new object[] { 4, "a book containing recipes and other information about the preparation and cooking of food.", "Cookbooks" });
-
-            migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "Id", "CategoryDescription", "CategoryName" },
-                values: new object[] { 5, "causing or meant to cause laughter.", "Comics" });
+                table: "Sizes",
+                columns: new[] { "Id", "SizeName" },
+                values: new object[,]
+                {
+                    { 1, "S" },
+                    { 2, "M" },
+                    { 3, "L" },
+                    { 4, "XL" },
+                    { 5, "XXL" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -350,14 +374,14 @@ namespace seventyfour.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_ProductId_ProductSizeId",
+                name: "IX_OrderDetails_ProductId",
                 table: "OrderDetails",
-                columns: new[] { "ProductId", "ProductSizeId" });
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductImages_ProductId_ProductSizeId",
+                name: "IX_ProductImages_ProductId",
                 table: "ProductImages",
-                columns: new[] { "ProductId", "ProductSizeId" });
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -365,9 +389,15 @@ namespace seventyfour.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_ProductSizeId",
-                table: "Products",
-                column: "ProductSizeId");
+                name: "IX_ProductSizes_ProductId",
+                table: "ProductSizes",
+                column: "ProductId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductSizes_SizeId",
+                table: "ProductSizes",
+                column: "SizeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -394,6 +424,9 @@ namespace seventyfour.Migrations
                 name: "ProductImages");
 
             migrationBuilder.DropTable(
+                name: "ProductSizes");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -406,10 +439,10 @@ namespace seventyfour.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Sizes");
 
             migrationBuilder.DropTable(
-                name: "ProductSizes");
+                name: "Categories");
         }
     }
 }

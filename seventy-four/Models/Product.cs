@@ -9,8 +9,6 @@ namespace RookieOnlineAssetManagement.Models
     {
         public int Id { get; set; }
 
-        public int ProductSizeId { get; set; }
-
         public int CategoryId { get; set; }
 
         public string ProductName { get; set; }
@@ -43,11 +41,11 @@ namespace RookieOnlineAssetManagement.Models
 
         public StateProductEnum StateProduct { get; set; }
 
-        public virtual Category Category { get; set; }
+        public Category Category { get; set; }
 
-        public virtual ICollection<ProductImages> ProductImages {get;set;}
+        public ICollection<ProductImages> ProductImages {get;set;}
 
-        public virtual ProductSize ProductSize { get; set; }
+        public ProductSize ProductSize { get; set; }
 
     }
 }

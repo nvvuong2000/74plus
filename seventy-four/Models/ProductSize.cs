@@ -1,10 +1,13 @@
-﻿ 
-namespace RookieOnlineAssetManagement.Models
+﻿namespace RookieOnlineAssetManagement.Models
 {
     public class ProductSize
     {
-        public int ID { get; set; }
+        public int SizeId { get; set; }
 
-        public string SizeName { get; set; }
+        public int ProductId { get; set; }
+
+        public int Quantity { get; set; }
+
+        public Size Size { get; set; }
     }
 }

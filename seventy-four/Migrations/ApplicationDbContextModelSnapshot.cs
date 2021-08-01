@@ -229,10 +229,7 @@ namespace seventyfour.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProductSizeId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -245,7 +242,7 @@ namespace seventyfour.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId", "ProductSizeId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -253,10 +250,9 @@ namespace seventyfour.Migrations
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.Product", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductSizeId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("BackImagePath")
                         .HasColumnType("nvarchar(max)");
@@ -306,11 +302,9 @@ namespace seventyfour.Migrations
                     b.Property<string>("UserIdUpdated")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id", "ProductSizeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("ProductSizeId");
 
                     b.ToTable("Products");
                 });
@@ -331,22 +325,40 @@ namespace seventyfour.Migrations
                     b.Property<string>("PathName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProductSizeId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId", "ProductSizeId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.ProductSize", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "SizeId");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.HasIndex("SizeId");
+
+                    b.ToTable("ProductSizes");
+                });
+
+            modelBuilder.Entity("RookieOnlineAssetManagement.Models.Size", b =>
+                {
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -354,9 +366,36 @@ namespace seventyfour.Migrations
                     b.Property<string>("SizeName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
-                    b.ToTable("ProductSizes");
+                    b.ToTable("Sizes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            SizeName = "S"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            SizeName = "M"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            SizeName = "L"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            SizeName = "XL"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            SizeName = "XXL"
+                        });
                 });
 
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.User", b =>
@@ -491,7 +530,9 @@ namespace seventyfour.Migrations
 
                     b.HasOne("RookieOnlineAssetManagement.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId", "ProductSizeId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
                 });
@@ -504,22 +545,33 @@ namespace seventyfour.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RookieOnlineAssetManagement.Models.ProductSize", "ProductSize")
-                        .WithMany()
-                        .HasForeignKey("ProductSizeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("ProductSize");
                 });
 
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.ProductImages", b =>
                 {
                     b.HasOne("RookieOnlineAssetManagement.Models.Product", null)
                         .WithMany("ProductImages")
-                        .HasForeignKey("ProductId", "ProductSizeId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RookieOnlineAssetManagement.Models.ProductSize", b =>
+                {
+                    b.HasOne("RookieOnlineAssetManagement.Models.Product", null)
+                        .WithOne("ProductSize")
+                        .HasForeignKey("RookieOnlineAssetManagement.Models.ProductSize", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RookieOnlineAssetManagement.Models.Size", "Size")
+                        .WithMany()
+                        .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Size");
                 });
 
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.Category", b =>
@@ -535,6 +587,8 @@ namespace seventyfour.Migrations
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.Product", b =>
                 {
                     b.Navigation("ProductImages");
+
+                    b.Navigation("ProductSize");
                 });
 #pragma warning restore 612, 618
         }
