@@ -40,11 +40,19 @@ namespace RookieOnlineAssetManagement
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddTransient<ICategoryServices, CategoryServices>();
+
             services.AddTransient<IProductServices, ProductServices>();
+
             services.AddTransient<IUserServices, UserServices>();
+
             services.AddTransient<IOrderServices, OrderServices>();
+
             services.AddTransient<IFileServices, FileServices>();
+
             services.AddTransient<ISizeServices, SizeServices>();
+
+            services.AddTransient<IProductSizeServices, ProductSizeServices>();
+
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();

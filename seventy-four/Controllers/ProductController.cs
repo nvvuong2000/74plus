@@ -17,14 +17,16 @@ namespace RookieShop.Backend.Controllers
     {
         private readonly IProductServices _productServices;
 
-        public ProductController(IProductServices productServices)
-        {
+        private readonly IProductSizeServices _productSizeServices;
 
+        public ProductController(IProductServices productServices, IProductSizeServices productSizeServices)
+        {
             _productServices = productServices;
 
+            _productSizeServices = productSizeServices;
         }
 
-        [HttpPost]
+        [HttpPost("create-product")]
         //[Authorize(Roles = "admin")]
         [AllowAnonymous]
         public async Task<IActionResult> CreateProduct([FromForm] CreateProductViewModel product)
@@ -32,6 +34,21 @@ namespace RookieShop.Backend.Controllers
             var result = await _productServices.CreateProduct(product);
 
             return Ok(result);
+        }
+
+        [HttpPost("create-product-size")]
+        //[Authorize(Roles = "admin")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateProductSize(CreateProductSizeViewModel productSize)
+        {
+            var result = await _productSizeServices.CreateAsync(productSize);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return NoContent();
         }
 
 

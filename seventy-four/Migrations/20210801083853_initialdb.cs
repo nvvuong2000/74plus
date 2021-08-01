@@ -285,13 +285,15 @@ namespace seventyfour.Migrations
                 name: "ProductSizes",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     SizeId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductSizes", x => new { x.ProductId, x.SizeId });
+                    table.PrimaryKey("PK_ProductSizes", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ProductSizes_Products_ProductId",
                         column: x => x.ProductId,

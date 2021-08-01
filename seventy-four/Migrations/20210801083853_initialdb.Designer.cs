@@ -10,7 +10,7 @@ using RookieOnlineAssetManagement.Data;
 namespace seventyfour.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210801033240_initialdb")]
+    [Migration("20210801083853_initialdb")]
     partial class initialdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -336,16 +336,21 @@ namespace seventyfour.Migrations
 
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.ProductSize", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("SizeId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductId", "SizeId");
+                    b.Property<int>("SizeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId")
                         .IsUnique();
