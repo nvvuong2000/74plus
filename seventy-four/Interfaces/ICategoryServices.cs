@@ -1,4 +1,5 @@
 ﻿using RookieOnlineAssetManagement.Models;
+using RookieOnlineAssetManagement.Shared.ViewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,12 +11,8 @@ namespace RookieOnlineAssetManagement.Interfaces
        
         public Task<Category> updateCategory(Category category);
         
-        public Task<List<Category>> GetCategoryList();
-
+        public Task<List<CategoryViewModel>> GetCategoryList();
         
-        public Task<Category> getCategorybyID(int id);
-
-
-
+        public Task<CategoryViewModel> getCategorybyID(int id);
     }
 }

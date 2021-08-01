@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RookieOnlineAssetManagement.Models;
 using RookieOnlineAssetManagement.Interfaces;
+using RookieOnlineAssetManagement.Models;
 using RookieOnlineAssetManagement.Share.Repo;
 using System.Collections.Generic;
 using System.Net;
@@ -13,15 +13,15 @@ namespace RookieOnlineAssetManagement.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize("Bearer")]
-    [Microsoft.AspNetCore.Authorization.Authorize]
+
     public class CategoryController : Controller
     {
-        private readonly ICategoryServices _repo;
-        public CategoryController(ICategoryServices repo)
-        {
-            _repo = repo;
-        }
+        private readonly ICategoryServices _categoryServices;
 
+        public CategoryController(ICategoryServices categoryServices)
+        {
+            _categoryServices = categoryServices;
+        }
 
         [HttpPost]
         [Authorize(Roles = "admin")]
@@ -34,7 +34,7 @@ namespace RookieOnlineAssetManagement.Controllers
                 CategoryDescription = category.CategoryDescription,
             };
 
-            var result = await _repo.addCategory(newItem);
+            var result = await _categoryServices.addCategory(newItem);
 
             return Ok(result);
         }
@@ -45,35 +45,33 @@ namespace RookieOnlineAssetManagement.Controllers
 
         public async Task<ActionResult<Category>> Edit(Category category)
         {
-            var result = await _repo.updateCategory(category);
+            var result = await _categoryServices.updateCategory(category);
 
             return Ok(result);
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<List<Category>> Get()
+        public async Task<IActionResult> Get()
         {
 
-            return await _repo.GetCategoryList();
+            var result = await _categoryServices.GetCategoryList();
 
+            return Ok(result);
         }
+
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<ActionResult<Category>> GetbyID(int id)
+        public async Task<IActionResult> GetbyID(int id)
         {
-            var category = await _repo.getCategorybyID(id);
+            var category = await _categoryServices.getCategorybyID(id);
 
             if (category == null)
             {
-
-                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.NotFound);
-
-                return Ok(result);
+                return NoContent();
             }
+
             return Ok(category);
         }
-
-
     }
 }

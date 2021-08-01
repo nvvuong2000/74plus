@@ -4,6 +4,8 @@ using RookieOnlineAssetManagement.Models;
 using RookieOnlineAssetManagement.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using RookieOnlineAssetManagement.Shared.ViewModel;
+using System.Linq;
 
 namespace RookieOnlineAssetManagement.Services
 {
@@ -35,7 +37,7 @@ namespace RookieOnlineAssetManagement.Services
 
             _context.Categories.Update(result);
 
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return category;
 
@@ -43,29 +45,35 @@ namespace RookieOnlineAssetManagement.Services
 
         public async Task<Category> addCategory(Category category)
         {
-
-
             _context.Categories.Add(category);
 
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return category;
-
-
         }
 
-        public async Task<List<Category>> GetCategoryList()
+        public async Task<List<CategoryViewModel>> GetCategoryList()
         {
-            var categoriesList = await _context.Categories.ToListAsync();
+            var categoriesList = await _context.Categories.Select(c => new CategoryViewModel 
+            { 
+                Id = c.Id, 
+                CategoryName = c.CategoryName, 
+                CategoryDescription = c.CategoryDescription 
+            }).ToListAsync();
 
             return categoriesList;
         }
 
-        public async Task<Category> getCategorybyID(int id)
+        public async Task<CategoryViewModel> getCategorybyID(int id)
         {
-            var categories = await _context.Categories.FirstOrDefaultAsync(ca => ca.Id == id);
+            var category = await _context.Categories.Select(c => new CategoryViewModel
+            {
+                Id = c.Id,
+                CategoryName = c.CategoryName,
+                CategoryDescription = c.CategoryDescription
+            }).FirstOrDefaultAsync(ca => ca.Id == id);
 
-            return categories;
+            return category;
         }
 
 
