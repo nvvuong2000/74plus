@@ -21,15 +21,18 @@ namespace RookieOnlineAssetManagement.Services
     {
         private readonly ApplicationDbContext _context;
 
+        private readonly IFileServices _fileServices;
+
         private readonly IConfiguration _config;
 
         private readonly IUserServices _repoUser;
+
         private readonly IMapper _mapper;
 
+        private readonly IWebHostEnvironment _hostingEnv;
 
-        private IHostingEnvironment _hostingEnv;
-
-        public ProductServices(ApplicationDbContext context, IUserServices repoUser, IHostingEnvironment hostingEnv, IConfiguration config, IMapper mapper)
+        public ProductServices(ApplicationDbContext context, IUserServices repoUser,
+            IFileServices fileServices, IWebHostEnvironment hostingEnv, IConfiguration config, IMapper mapper)
         {
             _context = context;
 
@@ -38,120 +41,101 @@ namespace RookieOnlineAssetManagement.Services
             _repoUser = repoUser;
 
             _config = config;
+
             _mapper = mapper;
 
-
+            _fileServices = fileServices;
         }
 
-        // This method add new product;
-
-        public async Task<bool> addProduct([FromBody] ProductRequest product)
+        public async Task<Product> CreateProduct([FromBody] CreateProductViewModel product)
         {
-            var stringF = "";
-
-            var stringB = "";
-
             var newProduct = new Product()
             {
                 CategoryId = product.CategoryId,
-
                 ProductName = product.ProductName,
-
-                Description = product.Description,
-
                 UnitPrice = product.UnitPrice,
-
+                Description = product.Description,
                 Status = product.Status,
-
                 IsNew = product.IsNew,
-
-                DateCreated = Convert.ToDateTime(DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")),
-
-                DateUpated = Convert.ToDateTime(DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")),
-
+                IsSale = product.IsSale,
+                DateCreated = DateTime.Now,
+                DateUpated = DateTime.Now,
+                PercentSale = product.PercentSale
             };
-            // add product 
-            await _context.Products.AddAsync(newProduct);
 
-            // save product
+            await _context.Products.AddAsync(newProduct);
 
             await _context.SaveChangesAsync();
 
-            var productId = newProduct.Id;
-            try
+            if (product.FrontImage != null)
             {
-                // Save Image list of product
+                var fileName = product.FrontImage.FileName;
 
-                foreach (var formFile in product.FormFiles)
+                var tempName = Guid.NewGuid().ToString();
+
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", tempName + fileName);
+
+                var result = _fileServices.UploadFileAsync(path, product.FrontImage);
+
+                if (result)
                 {
-                    // Random to avoid the same name 
+                    var pathSave = Path.Combine("/images/" + tempName + fileName);
 
-                    Random getrandom = new Random();
-
-                    int random = getrandom.Next(1, 99999);
-
-
-                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString() + formFile.FileName);
-
-                    if (formFile.Length > 0)
-                    {
-                        using (var stream = new FileStream(path, FileMode.Create))
-                        {
-                            formFile.CopyTo(stream);
-
-                        }
-                    }
-                    // create new image product
-                    var ProductImage = new ProductImages
-                    {
-                        // ProductID = productId,
-
-                        PathName = Path.Combine("/images/" + random.ToString() + formFile.FileName),
-
-                        Index = 3,
-
-
-
-
-                        //IsDefault = product.FormFiles.IndexOf(formFile) == 0 ? true : false,
-
-                        CaptionImage = "The image illustrates the product " + product.ProductName,
-
-                    };
-                    if (product.FormFiles.IndexOf(formFile) == 0)
-                    {
-                        stringF = ProductImage.PathName;
-                        ProductImage.Index = 1;
-                    }
-                    else if (product.FormFiles.IndexOf(formFile) == 1)
-                    {
-                        stringB = ProductImage.PathName;
-                        ProductImage.Index = 2;
-                    }
-                    // add image product
-
-                    _context.ProductImages.Add(ProductImage);
-                    var productEdit = await _context.Products.Where(p => p.Id == newProduct.Id).FirstOrDefaultAsync();
-                    productEdit.FrontImagePath = stringF;
-                    productEdit.BackImagePath = stringB;
-                    _context.Products.Update(productEdit);
-
-                    // save 
-
-                    await _context.SaveChangesAsync();
-
+                    newProduct.FrontImagePath = pathSave;
                 }
-                return true;
-
             }
-            catch (Exception)
+
+            if (product.BackImage != null)
             {
-                return false;
+                var fileName = product.BackImage.FileName;
+
+                var tempName = Guid.NewGuid().ToString(); ;
+
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", tempName + fileName);
+
+                var result = _fileServices.UploadFileAsync(path, product.BackImage);
+
+                if (result)
+                {
+                    var pathSave = Path.Combine("/images/" + tempName + fileName);
+
+                    newProduct.BackImagePath = pathSave;
+                }
             }
 
-        }
+            foreach (var formFile in product.FormFiles)
+            {
+                var tempName = Guid.NewGuid().ToString(); ;
 
-        // this method get product list for user with product availability: status is true and stock > 0
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", tempName + formFile.FileName);
+
+                if (formFile.Length > 0)
+                {
+                    var result = _fileServices.UploadFileAsync(path, formFile);
+
+                    if (result)
+                    {
+                        var pathSave = Path.Combine("/images/" + tempName + formFile.FileName);
+
+                        var productImage = new ProductImages
+                        {
+                            ProductId = newProduct.Id,
+                            PathName = pathSave,
+                            Index = product.FormFiles.IndexOf(formFile),
+                            CaptionImage = "The image illustrates the product " + product.ProductName
+                        };
+
+                        _context.ProductImages.Add(productImage);
+                    }
+                }
+            }
+
+            _context.Products.Update(newProduct);
+
+            await _context.SaveChangesAsync();
+
+            return newProduct;
+        }
 
         public async Task<PagedList<ProductListVM>> getListProductAsync(PagedRepository pagedRepository, SearchFilterSortProduct opt)
 
@@ -225,10 +209,10 @@ namespace RookieOnlineAssetManagement.Services
                         productQuery = productQuery.OrderByDescending(x => x.DateUpated);
                         break;
                     case "descName":
-                        productQuery =  productQuery.OrderByDescending(x => x.ProductName);
+                        productQuery = productQuery.OrderByDescending(x => x.ProductName);
                         break;
                     case "ascName":
-                        productQuery =  productQuery.OrderBy(x => x.ProductName);
+                        productQuery = productQuery.OrderBy(x => x.ProductName);
                         break;
                 }
             }
@@ -374,7 +358,7 @@ namespace RookieOnlineAssetManagement.Services
         }
         // This method is update some property of product and update all image list if at least 1 image is changed ;
 
-        public async Task<bool> updateProduct(int id, [FromForm] ProductRequest product)
+        public async Task<bool> updateProduct(int id, [FromForm] CreateProductViewModel product)
         {
             var productEdit = await _context.Products.Include(img => img.ProductImages).Where(p => p.Id == id).FirstOrDefaultAsync();
 
@@ -396,8 +380,6 @@ namespace RookieOnlineAssetManagement.Services
                 productEdit.IsNew = product.IsNew;
 
                 productEdit.Status = product.Status;
-
-                product.DateUpdated = Convert.ToDateTime(DateTime.Now.ToString());
 
                 await _context.SaveChangesAsync();
 

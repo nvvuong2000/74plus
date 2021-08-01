@@ -8,52 +8,59 @@ using RookieOnlineAssetManagement.Share.Repo;
 using RookieOnlineAssetManagement.Models;
 using Newtonsoft.Json;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace RookieShop.Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize("Bearer")]
-
-
     public class ProductController : ControllerBase
     {
-        private readonly IProductServices _repo;
+        private readonly IProductServices _productServices;
 
-        public ProductController(IProductServices repo)
+        public ProductController(IProductServices productServices)
         {
 
-            _repo = repo;
+            _productServices = productServices;
 
         }
-        // GET: api/<Product>
+
         [HttpPost]
+        //[Authorize(Roles = "admin")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateProduct([FromForm] CreateProductViewModel product)
+        {
+            var result = await _productServices.CreateProduct(product);
+
+            return Ok(result);
+        }
+
+
+        [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<ProductListVM>> GetAsync([FromQuery] PagedRepository pagedRepository, SearchFilterSortProduct opt)
         {
-            var list = await _repo.getListProductAsync( pagedRepository,  opt);
+            var list = await _productServices.getListProductAsync(pagedRepository, opt);
             Pagination(list);
             return Ok(list);
 
         }
+
         [HttpGet("ListProduct")]
         [AllowAnonymous]
         public async Task<ActionResult<ProductListVM>> GetListProductByAdmin()
         {
-            var list = await _repo.getListProductbyAdminAsync();
+            var list = await _productServices.getListProductbyAdminAsync();
 
             return Ok(list);
         }
 
-        // GET api/<Product>/5
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<ProductDetailsVM>> Get(int id)
         {
             try
             {
-                var list = await _repo.getProductAsync(id);
+                var list = await _productServices.getProductAsync(id);
 
                 if (list == null)
                 {
@@ -71,60 +78,45 @@ namespace RookieShop.Backend.Controllers
             }
         }
 
-        [HttpPost("addProduct")]
-        [AllowAnonymous]
-        public async Task<IActionResult> addProduct([FromForm] ProductRequest product)
-        {
-            try
-            {
-                var result = await _repo.addProduct(product);
+        //[HttpPut]
+        //[Authorize(Roles = "admin")]
+        //public async Task<IActionResult> Put([FromForm] ProductRequest product)
+        //{
+        //    //try
+        //    //{
+        //    //    var result = await _productServices.updateProduct(id, product);
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+        //    //    return Ok(result);
+        //    //}
+        //    //catch (Exception ex)
+        //    //{
+        //    //    return null;
+        //    //}
 
-        }
-        // PUT api/<Product>/5
-        [HttpPut]
-        [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Put([FromForm] ProductRequest product)
-        {
-            try
-            {
-                var id = product.ProductId;
+        //    return NoContent();
 
-                var result = await _repo.updateProduct(id, product);
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-
-        }
+        //}
 
         [HttpPost("search")]
         [AllowAnonymous]
         public async Task<ActionResult<Product>> search(string keyword)
         {
-            var list = await _repo.searchByName(keyword);
+            var list = await _productServices.searchByName(keyword);
 
             return Ok(list);
 
         }
+
         [HttpGet("/getID/{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<ProductListVM>> getProductsbyCategoryId(int id)
         {
-            var productlist = await _repo.getListProductbyCategoryID(id);
+            var productlist = await _productServices.getListProductbyCategoryID(id);
 
             return Ok(productlist);
 
         }
+
         [HttpGet("PaginationReport")]
         public void Pagination(PagedList<ProductListVM> result)
         {
@@ -139,11 +131,5 @@ namespace RookieShop.Backend.Controllers
             };
             Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metadata));
         }
-
-
-
-
-
-
     }
 }

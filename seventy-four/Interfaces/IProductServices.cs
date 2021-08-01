@@ -9,9 +9,9 @@ namespace RookieOnlineAssetManagement.Interfaces
 {
     public interface IProductServices
     {
-        public Task<bool> addProduct([FromForm] ProductRequest product);
+        public Task<Product> CreateProduct(CreateProductViewModel product);
 
-        public Task<bool> updateProduct(int id, [FromForm] ProductRequest product);
+        public Task<bool> updateProduct(int id, [FromForm] CreateProductViewModel product);
 
         Task<PagedList<ProductListVM>> getListProductAsync(PagedRepository pagedRepository, SearchFilterSortProduct opt);
         
