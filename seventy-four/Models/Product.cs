@@ -45,7 +45,7 @@ namespace RookieOnlineAssetManagement.Models
 
         public ICollection<ProductImages> ProductImages {get;set;}
 
-        public ProductSize ProductSize { get; set; }
+        public ICollection<ProductSize> ProductSizes { get; set; }
 
     }
 }

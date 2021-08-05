@@ -285,15 +285,13 @@ namespace seventyfour.Migrations
                 name: "ProductSizes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     SizeId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductSizes", x => x.Id);
+                    table.PrimaryKey("PK_ProductSizes", x => new { x.ProductId, x.SizeId });
                     table.ForeignKey(
                         name: "FK_ProductSizes_Products_ProductId",
                         column: x => x.ProductId,
@@ -388,12 +386,6 @@ namespace seventyfour.Migrations
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductSizes_ProductId",
-                table: "ProductSizes",
-                column: "ProductId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductSizes_SizeId",

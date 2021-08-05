@@ -12,6 +12,8 @@ namespace RookieOnlineAssetManagement.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<ProductSize>().HasKey(ps => new { ps.ProductId, ps.SizeId });
+
             modelBuilder.Entity<Category>().HasData(
                new Category { Id = 3, CategoryName = "Foreign", CategoryDescription = "Foreign language books are original books produced in foreign countries" },
                new Category { Id = 4, CategoryName = "Cookbooks", CategoryDescription = "a book containing recipes and other information about the preparation and cooking of food." },

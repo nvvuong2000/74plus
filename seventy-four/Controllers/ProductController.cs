@@ -54,7 +54,7 @@ namespace RookieShop.Backend.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<ProductListVM>> GetAsync([FromQuery] PagedRepository pagedRepository, SearchFilterSortProduct opt)
+        public async Task<ActionResult<ProductListVM>> GetAsync([FromQuery] PagedRepository pagedRepository, [FromQuery] SearchFilterSortProduct opt)
         {
             var list = await _productServices.getListProductAsync(pagedRepository, opt);
             Pagination(list);

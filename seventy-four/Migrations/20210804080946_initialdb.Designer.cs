@@ -10,7 +10,7 @@ using RookieOnlineAssetManagement.Data;
 namespace seventyfour.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210801083853_initialdb")]
+    [Migration("20210804080946_initialdb")]
     partial class initialdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -336,24 +336,16 @@ namespace seventyfour.Migrations
 
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.ProductSize", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.Property<int>("SizeId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasKey("ProductId", "SizeId");
 
                     b.HasIndex("SizeId");
 
@@ -564,8 +556,8 @@ namespace seventyfour.Migrations
             modelBuilder.Entity("RookieOnlineAssetManagement.Models.ProductSize", b =>
                 {
                     b.HasOne("RookieOnlineAssetManagement.Models.Product", null)
-                        .WithOne("ProductSize")
-                        .HasForeignKey("RookieOnlineAssetManagement.Models.ProductSize", "ProductId")
+                        .WithMany("ProductSizes")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -592,7 +584,7 @@ namespace seventyfour.Migrations
                 {
                     b.Navigation("ProductImages");
 
-                    b.Navigation("ProductSize");
+                    b.Navigation("ProductSizes");
                 });
 #pragma warning restore 612, 618
         }
