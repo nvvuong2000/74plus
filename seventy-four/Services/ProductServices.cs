@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using RookieOnlineAssetManagement.Common.Enums;
+using RookieOnlineAssetManagement.Share;
 
 namespace RookieOnlineAssetManagement.Services
 {
@@ -31,8 +32,7 @@ namespace RookieOnlineAssetManagement.Services
 
         private readonly IWebHostEnvironment _hostingEnv;
 
-        public ProductServices(ApplicationDbContext context, IUserServices repoUser,
-            IFileServices fileServices, IWebHostEnvironment hostingEnv, IConfiguration config, IMapper mapper)
+        public ProductServices(ApplicationDbContext context, IUserServices repoUser, IFileServices fileServices, IWebHostEnvironment hostingEnv, IConfiguration config, IMapper mapper)
         {
             _context = context;
 
@@ -47,7 +47,7 @@ namespace RookieOnlineAssetManagement.Services
             _fileServices = fileServices;
         }
 
-        public async Task<Product> CreateProduct([FromBody] CreateProductViewModel product)
+        public async Task<Product> CreateProductAsync([FromBody] CreateProductViewModel product)
         {
             var newProduct = new Product()
             {
@@ -137,64 +137,20 @@ namespace RookieOnlineAssetManagement.Services
             return newProduct;
         }
 
-        public async Task<PagedList<ProductListVM>> getListProductAsync(PagedRepository pagedRepository, SearchFilterSortProduct opt)
-
+        public async Task<PaginationResultModel> GetListProductAsync(QueryModel query)
         {
-            var productQuery = _context
-              .Products
-              .Include(x => x.Category)
-              .AsQueryable();
+            var productQuery = _context.Products.Where(p => p.Status == true).Include(x => x.Category).Include(p => p.ProductImages).AsQueryable();
 
             productQuery = productQuery.OrderByDescending(x => x.DateUpated);
 
-            if (opt.States[0].Equals(-2))
+            if (!String.IsNullOrEmpty(query.Keyword))
             {
-                if (opt.States[0].Equals(-2) && !opt.Categories[0].Equals(-1))
-                {
-                    productQuery = productQuery.Where(x => opt.Categories.Contains(x.CategoryId));
-
-                }
-                if (opt.States[0].Equals(-2) && opt.Categories[0].Equals(-1))
-                {
-                    productQuery = productQuery.Where(x =>
-                  x.StateProduct == StateProductEnum.Available
-                  || x.StateProduct == StateProductEnum.NotAvailable
-                  || x.StateProduct == StateProductEnum.CommingSoon);
-
-                }
-
-            }
-            else
-            {
-                if (opt.States[0].Equals(-1) && opt.Categories[0].Equals(-1))
-                {
-                    productQuery = productQuery.AsQueryable();
-                }
-                else if (opt.States[0].Equals(-1) && !opt.Categories[0].Equals(-1))
-                {
-                    productQuery = productQuery.Where(x => opt.Categories.Contains(x.CategoryId));
-                }
-                else if (opt.Categories[0].Equals(-1) && !opt.States[0].Equals(-1))
-                {
-                    productQuery = productQuery.Where(x => opt.States.Contains((int)x.StateProduct));
-                }
-                else
-                {
-                    productQuery = productQuery.Where(x =>
-                    opt.Categories.Contains(x.CategoryId)
-                    && opt.States.Contains((int)x.StateProduct));
-                }
+                productQuery = productQuery.Where(x => x.ProductName.Contains(query.Keyword));
             }
 
-            if (!String.IsNullOrEmpty(opt.Keyword))
+            if (!String.IsNullOrEmpty(query.SortBy))
             {
-                productQuery = productQuery.Where(x => x.ProductName.Contains(opt.Keyword));
-            }
-
-
-            if (!String.IsNullOrEmpty(opt.Column))
-            {
-                switch (opt.Column)
+                switch (query.SortBy)
                 {
                     case "descPrice":
                         productQuery = productQuery.OrderByDescending(x => x.UnitPrice);
@@ -211,24 +167,13 @@ namespace RookieOnlineAssetManagement.Services
                     case "descName":
                         productQuery = productQuery.OrderByDescending(x => x.ProductName);
                         break;
-                    case "ascName":
+                    default:
                         productQuery = productQuery.OrderBy(x => x.ProductName);
                         break;
                 }
             }
-            //var result = productQuery.Select(x => new AssetInfoDto
-            //{
-            //    AssetCode = x.Id,
-            //    AssetName = x.AssetName,
-            //    CategoryName = x.Category.CategoryName,
-            //    StateName = ((StateAssetEnum)x.StateAsset).AsString(EnumFormat.Description),
-            //    StateId = ((int)x.StateAsset),
-            //    Location = x.Location,
-            //});
-            var productList = productQuery.Include(p => p.ProductImages).Where(p => p.Status == true)
-            //&& p.Stock > 0)
 
-            .Select(x => new ProductListVM
+            var productList = productQuery.Select(x => new ProductListVM
             {
                 ProductId = x.Id,
 
@@ -248,73 +193,42 @@ namespace RookieOnlineAssetManagement.Services
 
                 Status = x.Status,
 
-            }).AsQueryable();
+            });
 
-            return PagedList<ProductListVM>
-              .ToPagedList(productList,
-              pagedRepository.PageNumber,
-              pagedRepository.PageSize);
+            return await PaginationResultModel.ToPagedListAsync(productList, query.PageNumber, query.PageSize);
         }
 
-        // this method get product list for admin
-
-        public async Task<List<ProductListVM>> getListProductbyAdminAsync()
+        public async Task<PaginationResultModel> GetProductByCategoryIdAsync(int id, QueryModel query)
         {
-            var productList = await _context.Products.Include(p => p.ProductImages)
-            .Select(x => new ProductListVM
-            {
-                ProductId = x.Id,
+            var productList = _context.Products.Include(p => p.ProductImages).Where(p => p.CategoryId == id)
+                .Select(x => new ProductListVM
+                {
+                    ProductId = x.Id,
 
-                ProductName = x.ProductName,
+                    ProductName = x.ProductName,
 
-                UnitPrice = x.UnitPrice,
+                    UnitPrice = x.UnitPrice,
 
-                IsNew = x.IsNew,
+                    IsNew = x.IsNew,
 
-                CategoryId = x.CategoryId,
+                    CategoryId = x.CategoryId,
 
-                CategoryName = x.Category.CategoryName,
+                    CategoryName = x.Category.CategoryName,
 
-                //Stock = x.Stock,
+                    BackImagePath = _config["Host"] + x.BackImagePath,
 
-                Status = x.Status,
+                    FrontImagePath = _config["Host"] + x.FrontImagePath,
 
+                    Status = x.Status,
 
+                }).AsQueryable();
 
-                //ImgDefault = x.ProductImages.Where(img => img.IsDefault == true).Select(img => _config["Host"] + img.PathName).FirstOrDefault(),
-
-            }).ToListAsync();
-
-            return productList;
+            return await PaginationResultModel.ToPagedListAsync(productList, query.PageNumber, query.PageSize);
         }
 
-        // this method get product list by category Id
-        public async Task<List<ProductListVM>> getListProductbyCategoryID(int id)
+        public async Task<ProductDetailsVM> GetProductByIdAsync(int id)
         {
-            var productList = await _context.Products.Include(p => p.ProductImages).Select(x => new ProductListVM
-            {
-                CategoryId = x.CategoryId,
-
-                ProductId = x.Id,
-
-                ProductName = x.ProductName,
-
-                UnitPrice = x.UnitPrice,
-
-                IsNew = x.IsNew,
-
-                //ImgDefault = x.ProductImages.Where(img => img.IsDefault == true).Select(img => _config["Host"] + img.PathName).FirstOrDefault()
-
-            }).Where(p => p.CategoryId == id).ToListAsync();
-
-            return productList;
-        }
-
-        // this method get product by product Id ,images list and  list rating of product 
-
-        public async Task<ProductDetailsVM> getProductAsync(int id)
-        {
-            var product = _context.Products.Include(p => p.ProductImages).Include(p => p.Category).Select(p => new ProductDetailsVM()
+            var product = await _context.Products.Include(p => p.ProductImages).Include(p => p.Category).Select(p => new ProductDetailsVM()
             {
                 Id = p.Id,
 
@@ -346,7 +260,7 @@ namespace RookieOnlineAssetManagement.Services
 
 
 
-            }).Where(p => p.Id == id).FirstOrDefault();
+            }).Where(p => p.Id == id).FirstOrDefaultAsync();
 
             if (product == null)
             {
@@ -358,7 +272,7 @@ namespace RookieOnlineAssetManagement.Services
         }
         // This method is update some property of product and update all image list if at least 1 image is changed ;
 
-        public async Task<bool> updateProduct(int id, [FromForm] CreateProductViewModel product)
+        public async Task<bool> UpdateProductAsync(int id, [FromForm] CreateProductViewModel product)
         {
             var productEdit = await _context.Products.Include(img => img.ProductImages).Where(p => p.Id == id).FirstOrDefaultAsync();
 
@@ -366,232 +280,115 @@ namespace RookieOnlineAssetManagement.Services
             {
                 return false;
             }
-            else
+
+            productEdit.ProductName = product.ProductName;
+
+            productEdit.CategoryId = product.CategoryId;
+
+            productEdit.Description = product.Description;
+
+            productEdit.UnitPrice = product.UnitPrice;
+
+            productEdit.IsNew = product.IsNew;
+
+            productEdit.Status = product.Status;
+
+            productEdit.PercentSale = product.PercentSale;
+
+            if (product.FrontImage != null)
             {
-                productEdit.ProductName = product.ProductName;
+                var fileName = product.FrontImage.FileName;
 
-                productEdit.CategoryId = product.CategoryId;
+                var tempName = Guid.NewGuid().ToString();
 
-                productEdit.Description = product.Description;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", tempName + fileName);
 
-                productEdit.UnitPrice = product.UnitPrice;
+                var result = _fileServices.UploadFileAsync(path, product.FrontImage);
 
-
-                productEdit.IsNew = product.IsNew;
-
-                productEdit.Status = product.Status;
-
-                await _context.SaveChangesAsync();
-
-                // if no change images list return state update success
-
-                if (product.FormFiles == null)
+                if (result)
                 {
-                    return true;
-                }
-                else
-                {
-                    // else : remove all old images list
-
-                    try
+                    if (!string.IsNullOrEmpty(productEdit.FrontImagePath))
                     {
-                        var productImagesEdit = productEdit.ProductImages.ToList();
+                        var rootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 
-                        if (productImagesEdit != null)
-                        {
-                            for (int i = 0; i < productImagesEdit.Count; i++)
-                            {
-                                if (DeleteFile(productImagesEdit[i].PathName) == true)
-                                {
-                                    var img = await _context.ProductImages.FindAsync(productImagesEdit[i].Id);
-
-                                    if (img == null)
-                                    {
-                                        return false;
-                                    }
-
-                                    _context.ProductImages.Remove(img);
-
-                                    await _context.SaveChangesAsync();
-                                }
-                            }
-
-                        }
-                        // and add new images list 
-
-                        foreach (var formFile in product.FormFiles)
-                        {
-                            Random getrandom = new Random();
-
-                            int random = getrandom.Next(1, 99999);
-
-                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString() + formFile.FileName);
-
-                            if (formFile.Length > 0)
-                            {
-                                using (var stream = new FileStream(path, FileMode.Create))
-                                {
-                                    formFile.CopyTo(stream);
-
-                                }
-                            }
-                            var ProductImage = new ProductImages
-                            {
-                                //ProductId = id,
-
-                                PathName = Path.Combine("/images/" + random.ToString() + formFile.FileName),
-
-                                //IsDefault = product.FormFiles.IndexOf(formFile) == 0 ? true : false,
-                                CaptionImage = "The image illustrates the product" + product.ProductName,
-
-                            };
-                            // add 
-                            _context.ProductImages.Add(ProductImage);
-                            // save
-                            await _context.SaveChangesAsync();
-                        }
-                        return true;
+                        _fileServices.DeleteFileAsync(rootPath + productEdit.FrontImagePath.Replace("/", "\\"));
                     }
-                    catch (Exception)
-                    {
-                        return false;
-                    }
+
+                    var pathSave = Path.Combine("/images/" + tempName + fileName);
+
+                    productEdit.FrontImagePath = pathSave;
                 }
-
             }
-        }
 
-        // This method will delete file image in root image
-
-        public bool DeleteFile(string file)
-        {
-
-            string webRootPath = _hostingEnv.WebRootPath;
-
-            var fullPath = Path.Combine(webRootPath + file);
-
-
-            if (System.IO.File.Exists(fullPath))
+            if (product.BackImage != null)
             {
-                System.IO.File.Delete(fullPath);
+                var fileName = product.BackImage.FileName;
+
+                var tempName = Guid.NewGuid().ToString(); ;
+
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", tempName + fileName);
+
+                var result = _fileServices.UploadFileAsync(path, product.BackImage);
+
+                if (result)
+                {
+                    if (!string.IsNullOrEmpty(productEdit.BackImagePath))
+                    {
+                        var rootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+
+                        _fileServices.DeleteFileAsync(rootPath + productEdit.BackImagePath.Replace("/", "\\"));
+                    }
+
+                    var pathSave = Path.Combine("/images/" + tempName + fileName);
+
+                    productEdit.BackImagePath = pathSave;
+                }
             }
+
+            if(productEdit.ProductImages.Count != 0)
+            {
+                foreach(var image in productEdit.ProductImages)
+                {
+                    var rootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+
+                    _fileServices.DeleteFileAsync(rootPath + image.PathName.Replace("/", "\\"));
+
+                    _context.Remove(image);
+                }
+            }
+
+            foreach (var formFile in product.FormFiles)
+            {
+                var tempName = Guid.NewGuid().ToString(); ;
+
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", tempName + formFile.FileName);
+
+                if (formFile.Length > 0)
+                {
+                    var result = _fileServices.UploadFileAsync(path, formFile);
+
+                    if (result)
+                    {
+                        var pathSave = Path.Combine("/images/" + tempName + formFile.FileName);
+
+                        var productImage = new ProductImages
+                        {
+                            ProductId = productEdit.Id,
+                            PathName = pathSave,
+                            Index = product.FormFiles.IndexOf(formFile),
+                            CaptionImage = "The image illustrates the product " + product.ProductName
+                        };
+
+                        _context.ProductImages.Add(productImage);
+                    }
+                }
+            }
+
+            _context.Update(productEdit);
+
+            await _context.SaveChangesAsync();
 
             return true;
         }
-
-        // this medthod search product by name with name product has containt the keyword
-        public async Task<List<Product>> searchByName(string keyword)
-        {
-            var product = await _context.Products.Include(p => p.ProductImages).Where(p => p.ProductName.Contains(keyword)).OrderByDescending(p => p.ProductName).ToListAsync();
-
-            return product;
-        }
-
-        // this method return list product need evaluated with coditions: customer was recevied the order 
-
-        //public async Task<List<ProductListVM>> getListProductNeedRating()
-        //{
-        //    // a query get list product when the order have status was recevied (include a result query productberated under)
-
-        //    string userID = _repoUser.getUserID();
-
-        //    var query = await (from od in _context.OrderDetails
-
-        //                       join o in _context.Order on od.OrderId equals o.Id
-
-        //                       join p in _context.Products on od.ProductId equals p.Id
-
-        //                       join pm in _context.ProductImages on p.Id equals pm.ProductID
-
-        //                       // status is 2 is means customer was recevied the order
-
-        //                       where (o.Status == 2 && pm.IsDefault == true && o.UserId.Equals(userID))
-
-        //                       select new ProductListVM
-        //                       {
-        //                           ProductId = p.Id,
-
-        //                           ProductName = p.ProductName,
-
-        //                           ImgDefault = _config["Host"] + pm.PathName,
-
-        //                       }).ToListAsync();
-
-
-        //    // query  get list product be rated by cusomter before
-
-        //    var productberated = await (
-        //                 from p in _context.Products
-
-        //                 join pm in _context.ProductImages on p.Id equals pm.ProductID
-
-        //                 join pr in _context.RattingProduct on p.Id equals pr.ProductId
-
-        //                 where (pm.IsDefault == true && pr.UserId.Equals(userID))
-
-        //                 select new ProductListVM
-        //                 {
-
-        //                     ProductId = p.Id,
-
-        //                     ProductName = p.ProductName,
-
-        //                     ImgDefault = _config["Host"] + pm.PathName,
-
-        //                 }).ToListAsync();
-
-        //    // and list product has not been evaluated
-
-        //    var NotInRecord = query.Where(p => !productberated.Any(p2 => p2.ProductId == p.ProductId)).ToList();
-
-        //    return NotInRecord;
-        //}
-
-        // this medthod evaluated for product 
-
-        //public async Task<bool> ratingProduct(RatingProductRequest request)
-        //{
-        //    // create new ratings
-
-        //    Random getrandom = new Random();
-
-        //    int random = getrandom.Next(1, 999);
-
-        //    var rating = new RattingProduct()
-        //    {
-        //        Id = random,
-
-        //        UserId = _repoUser.getUserID(),
-
-        //        ProductId = request.ProductId,
-
-        //        NumberRating = request.NumberRating,
-
-        //        Date = Convert.ToDateTime(DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")),
-
-        //    };
-        //    // add
-
-        //    _context.RattingProduct.Add(rating);
-        //    // save
-
-        //    _context.SaveChanges();
-
-        //    // after save then update ratings for this product     
-
-        //    var product = _context.Products.Where(p => p.Id == request.ProductId).FirstOrDefault();
-
-        //    product.Rating = avgRatings(request.ProductId);
-
-        //    _context.SaveChanges();
-
-        //    return true;
-
-        //}
-
-
-
-
     }
-
 }

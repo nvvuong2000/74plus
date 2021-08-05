@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 using RookieOnlineAssetManagement.Interfaces;
 using RookieOnlineAssetManagement.Shared.ViewModel;
 using RookieOnlineAssetManagement.Share.Repo;
-using RookieOnlineAssetManagement.Models;
-using Newtonsoft.Json;
+using RookieOnlineAssetManagement.Share;
 
 namespace RookieShop.Backend.Controllers
 {
@@ -27,18 +25,16 @@ namespace RookieShop.Backend.Controllers
         }
 
         [HttpPost("create-product")]
-        //[Authorize(Roles = "admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> CreateProduct([FromForm] CreateProductViewModel product)
         {
-            var result = await _productServices.CreateProduct(product);
+            var result = await _productServices.CreateProductAsync(product);
 
             return Ok(result);
         }
 
         [HttpPost("create-product-size")]
-        //[Authorize(Roles = "admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> CreateProductSize(CreateProductSizeViewModel productSize)
         {
             var result = await _productSizeServices.CreateAsync(productSize);
@@ -54,99 +50,44 @@ namespace RookieShop.Backend.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<ProductListVM>> GetAsync([FromQuery] PagedRepository pagedRepository, [FromQuery] SearchFilterSortProduct opt)
+        public async Task<IActionResult> GetAsync([FromQuery] QueryModel query)
         {
-            var list = await _productServices.getListProductAsync(pagedRepository, opt);
-            Pagination(list);
-            return Ok(list);
+            var products = await _productServices.GetListProductAsync(query);
 
+            return Ok(products);
         }
 
-        [HttpGet("ListProduct")]
-        [AllowAnonymous]
-        public async Task<ActionResult<ProductListVM>> GetListProductByAdmin()
-        {
-            var list = await _productServices.getListProductbyAdminAsync();
-
-            return Ok(list);
-        }
-
-        [HttpGet("{id}")]
+        [HttpGet("{id}/detail")]
         [AllowAnonymous]
         public async Task<ActionResult<ProductDetailsVM>> Get(int id)
         {
-            try
-            {
-                var list = await _productServices.getProductAsync(id);
-
-                if (list == null)
-                {
-                    return Ok(null);
-                }
-
-                return Ok(list);
-
-
-
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
-        }
-
-        //[HttpPut]
-        //[Authorize(Roles = "admin")]
-        //public async Task<IActionResult> Put([FromForm] ProductRequest product)
-        //{
-        //    //try
-        //    //{
-        //    //    var result = await _productServices.updateProduct(id, product);
-
-        //    //    return Ok(result);
-        //    //}
-        //    //catch (Exception ex)
-        //    //{
-        //    //    return null;
-        //    //}
-
-        //    return NoContent();
-
-        //}
-
-        [HttpPost("search")]
-        [AllowAnonymous]
-        public async Task<ActionResult<Product>> search(string keyword)
-        {
-            var list = await _productServices.searchByName(keyword);
+            var list = await _productServices.GetProductByIdAsync(id);
 
             return Ok(list);
-
         }
 
-        [HttpGet("/getID/{id}")]
+        [HttpGet("{id}/get-by-category")]
         [AllowAnonymous]
-        public async Task<ActionResult<ProductListVM>> getProductsbyCategoryId(int id)
+        public async Task<IActionResult> GetProductsbyCategoryId(int id, [FromQuery] QueryModel query)
         {
-            var productlist = await _productServices.getListProductbyCategoryID(id);
+            var products = await _productServices.GetProductByCategoryIdAsync(id, query);
 
-            return Ok(productlist);
-
+            return Ok(products);
         }
 
-        [HttpGet("PaginationReport")]
-        public void Pagination(PagedList<ProductListVM> result)
+        [HttpPut("{id}/update-product")]
+        //[Authorize(Roles = "admin")]
+        [AllowAnonymous]
+        public async Task<IActionResult> UpdateProduct(int id, [FromForm] CreateProductViewModel product)
         {
-            var metadata = new
+            var result = await _productServices.UpdateProductAsync(id, product);
+
+            if(result)
             {
-                result.TotalCount,
-                result.PageSize,
-                result.CurrentPage,
-                result.TotalPages,
-                result.HasNext,
-                result.HasPrevious,
-            };
-            Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metadata));
+                return Ok();
+            }
+
+            return NotFound();
         }
     }
 }

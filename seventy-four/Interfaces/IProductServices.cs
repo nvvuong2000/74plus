@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RookieOnlineAssetManagement.Models;
+using RookieOnlineAssetManagement.Share;
 using RookieOnlineAssetManagement.Share.Repo;
 using RookieOnlineAssetManagement.Shared.ViewModel;
 using System.Collections.Generic;
@@ -9,22 +10,14 @@ namespace RookieOnlineAssetManagement.Interfaces
 {
     public interface IProductServices
     {
-        public Task<Product> CreateProduct(CreateProductViewModel product);
+        Task<Product> CreateProductAsync(CreateProductViewModel product);
 
-        public Task<bool> updateProduct(int id, [FromForm] CreateProductViewModel product);
+        Task<bool> UpdateProductAsync(int id, [FromForm] CreateProductViewModel product);
 
-        Task<PagedList<ProductListVM>> getListProductAsync(PagedRepository pagedRepository, SearchFilterSortProduct opt);
+        Task<PaginationResultModel> GetListProductAsync(QueryModel query);
         
-        public Task<ProductDetailsVM> getProductAsync(int id);
-        
-        public Task<List<ProductListVM>> getListProductbyAdminAsync();
-        
-        public Task<List<ProductListVM>> getListProductbyCategoryID(int id);
-              
-        public Task<List<Product>> searchByName(string keyword);
-        
-       
+        Task<ProductDetailsVM> GetProductByIdAsync(int id);
 
-
+        Task<PaginationResultModel> GetProductByCategoryIdAsync(int id, QueryModel query);
     }
 }

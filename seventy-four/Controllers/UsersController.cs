@@ -41,8 +41,4 @@ namespace RookieOnlineAssetManagement.Controllers
             return Ok(user);
         }
     }
-
-
-
-
 }
