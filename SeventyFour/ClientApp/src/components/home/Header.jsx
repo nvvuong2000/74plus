@@ -17,7 +17,7 @@ export default function Header() {
         setItems(getItemList);
     }, [getItemList]);
     var quan = JSON.parse(window.localStorage.getItem("damua"));
-    console.log(quan.length);
+    
     return (
         <header className="no-index">
             <Container>
