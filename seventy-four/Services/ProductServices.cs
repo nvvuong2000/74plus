@@ -26,25 +26,15 @@ namespace RookieOnlineAssetManagement.Services
 
         private readonly IConfiguration _config;
 
-        private readonly IUserServices _repoUser;
+        private readonly ICurrentUserServices _currentUserServices;
 
-        private readonly IMapper _mapper;
-
-        private readonly IWebHostEnvironment _hostingEnv;
-
-        public ProductServices(ApplicationDbContext context, IUserServices repoUser, IFileServices fileServices, IWebHostEnvironment hostingEnv, IConfiguration config, IMapper mapper)
+        public ProductServices(ApplicationDbContext context, IFileServices fileServices, ICurrentUserServices currentUserServices)
         {
             _context = context;
 
-            _hostingEnv = hostingEnv;
-
-            _repoUser = repoUser;
-
-            _config = config;
-
-            _mapper = mapper;
-
             _fileServices = fileServices;
+
+            _currentUserServices = currentUserServices;
         }
 
         public async Task<Product> CreateProductAsync([FromBody] CreateProductViewModel product)
@@ -60,7 +50,8 @@ namespace RookieOnlineAssetManagement.Services
                 IsSale = product.IsSale,
                 DateCreated = DateTime.Now,
                 DateUpated = DateTime.Now,
-                PercentSale = product.PercentSale
+                PercentSale = product.PercentSale,
+                UserIdCreated = _currentUserServices.UserId.ToString()
             };
 
             await _context.Products.AddAsync(newProduct);
@@ -294,6 +285,10 @@ namespace RookieOnlineAssetManagement.Services
             productEdit.Status = product.Status;
 
             productEdit.PercentSale = product.PercentSale;
+
+            productEdit.DateUpated = DateTime.Now;
+
+            productEdit.UserIdUpdated = _currentUserServices.UserId.ToString();
 
             if (product.FrontImage != null)
             {
